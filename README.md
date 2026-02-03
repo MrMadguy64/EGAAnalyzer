@@ -11,7 +11,7 @@ Config file should contain >= 8 lines.
 
 1) Instruction: TEXTABS, TEXTREL, BINABS, BINREL - text or binary dump, absolute or relative (to config) path.
 2) Path to file - either absolute or relative to config's path
-3) Dump start offset - for binary data only, can be any Pascal string, $00 for hex values for example.
+3) Dump start offset - for binary data only, can be any Pascal number, $00 for hex values for example.
 4) Dump end offset - for binary data only, offset of next byte after end of data, so End-Start=Size.
 5) List of 4 dot clocks in Hz. Used to calculate estimated horizotal and vertical frequences.
 
