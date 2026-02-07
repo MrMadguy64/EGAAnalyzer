@@ -1,0 +1,67 @@
+object Form1: TForm1
+  Left = 242
+  Height = 480
+  Top = 250
+  Width = 640
+  Caption = 'EGAAnalyzer'
+  ClientHeight = 480
+  ClientWidth = 640
+  Position = poScreenCenter
+  LCLVersion = '4.4.0.0'
+  OnCreate = FormCreate
+  object Memo1: TMemo
+    Left = 0
+    Height = 414
+    Top = 34
+    Width = 640
+    Align = alClient
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Left = 0
+    Height = 32
+    Top = 448
+    Width = 640
+    Align = alBottom
+    Caption = 'Analyze'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 34
+    Top = 0
+    Width = 640
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 34
+    ClientWidth = 640
+    TabOrder = 2
+    object Edit1: TEdit
+      Left = 8
+      Height = 23
+      Top = 6
+      Width = 544
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 0
+    end
+    object Button2: TButton
+      Left = 560
+      Height = 23
+      Top = 6
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'Browse...'
+      TabOrder = 1
+      OnClick = Button2Click
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'EGA Analyzer config|*.cfg|All files|*.*'
+    Options = [ofPathMustExist, ofFileMustExist, ofEnableSizing, ofViewDetail]
+    Left = 162
+    Top = 300
+  end
+end
