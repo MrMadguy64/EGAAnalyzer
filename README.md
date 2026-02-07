@@ -14,7 +14,3 @@ Config file should contain >= 8 lines.
 3) Dump start offset - for binary data only, can be any Pascal number, $00 for hex values for example.
 4) Dump end offset - for binary data only, offset of next byte after end of data, so End-Start=Size.
 5) List of 4 dot clocks in Hz. Used to calculate estimated horizotal and vertical frequences.
-
-**Warranty disclaimer:** 
-
-You use this software at your own risk. It's provided "as is" without any express or implied warranty of any kind, including warranties of merchantability or fitness for any particular purpose. Author isn't liable for any direct, indirect, incidental, special, exemplary, or consequential damage, caused by using this software.
