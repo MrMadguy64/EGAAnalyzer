@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="6">
+      <Unit0>
+        <Filename Value="Launcher.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="33" Y="8"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="C:\lazarus\fpc\3.2.0\source\rtl\win\wininc\ascdef.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="457"/>
+        <CursorPos X="10" Y="470"/>
+        <UsageCount Value="10"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="C:\lazarus\fpc\3.2.0\source\rtl\win\sysutils.pp"/>
+        <UnitName Value="SysUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1225"/>
+        <CursorPos X="3" Y="1290"/>
+        <UsageCount Value="10"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="C:\lazarus\fpc\3.2.0\source\rtl\objpas\sysutils\osutilsh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="22"/>
+        <CursorPos X="10" Y="35"/>
+        <UsageCount Value="10"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="C:\lazarus\fpc\3.2.0\source\rtl\objpas\sysutils\finah.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="10" Y="23"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\lazarus\fpc\3.2.0\source\rtl\objpas\sysutils\fina.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <CursorPos X="3" Y="24"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+    </Units>
+    <JumpHistory Count="24" HistoryIndex="23">
+      <Position1>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="21" Column="23"/>
+      </Position1>
+      <Position2>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="14" Column="80"/>
+      </Position2>
+      <Position3>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="15" Column="37"/>
+      </Position3>
+      <Position4>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="44" Column="35" TopLine="19"/>
+      </Position4>
+      <Position5>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="64" Column="16" TopLine="41"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="129" Column="5" TopLine="103"/>
+      </Position6>
+      <Position7>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="44" Column="6" TopLine="32"/>
+      </Position7>
+      <Position8>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="85" Column="28" TopLine="72"/>
+      </Position8>
+      <Position9>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="92" Column="22" TopLine="79"/>
+      </Position9>
+      <Position10>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="95" Column="28" TopLine="82"/>
+      </Position10>
+      <Position11>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="126" Column="9" TopLine="104"/>
+      </Position11>
+      <Position12>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="47" Column="9" TopLine="34"/>
+      </Position12>
+      <Position13>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="48" Column="13" TopLine="48"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="122" Column="10" TopLine="105"/>
+      </Position14>
+      <Position15>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="127" Column="16" TopLine="105"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="126" Column="23" TopLine="105"/>
+      </Position16>
+      <Position17>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="122" Column="21" TopLine="105"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="102" Column="23" TopLine="80"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="13" Column="39"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="49" Column="28" TopLine="34"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="3" Column="8"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="30" Column="17" TopLine="17"/>
+      </Position22>
+      <Position23>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="36" Column="62" TopLine="10"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Launcher.lpr"/>
+        <Caret Line="63" Column="17" TopLine="47"/>
+      </Position24>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="1" ActiveMode="default">
+        <Mode0 Name="default">
+          <local>
+            <CommandLineParams Value="Test.cfg"/>
+          </local>
+        </Mode0>
+      </Modes>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
