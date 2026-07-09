@@ -67,7 +67,7 @@ var
   Form1: TForm1;
 
 const
-  Version = 'v0.4';
+  Version = 'v0.5';
   CpuID ={$ifdef CPUX86}'Win32'{$else}'Win64'{$endif};
   ReleaseID ={$ifdef DEBUG}'Debug'{$else}'Release'{$endif};
   TabWidth = 8;
