@@ -363,7 +363,7 @@ begin
   end;
   Print('Horizontal blanking end: ' + ByteToDots(HBlankEnd, Dots));
   if HBlankEnd > HTotal then begin
-    HBlankEnd := WrapClock(HTotal, HBlankEnd, AEGAData.CRRegs[crHBlankEnd]);
+    HBlankEnd := WrapClock(HTotal, HBlankEnd, AEGAData.CRRegs[crHBlankEnd] and $1F);
     Print('Horizontal blanking end real value: ' + ByteToDots(HBlankEnd, Dots));
     if HBlankEnd > HTotal + 1 then begin
       Print('Horizontal blanking end on next line: ' + ByteToDots(HBlankEnd - (HTotal + 1), Dots));
@@ -387,7 +387,7 @@ begin
   end;
   Print('Horizontal sync end: ' + ByteToDots(HSyncEnd, Dots));
   if HSyncEnd > HTotal then begin
-    HSyncEnd := WrapClock(HTotal, HSyncEnd, AEGAData.CRRegs[crHSyncEnd]);
+    HSyncEnd := WrapClock(HTotal, HSyncEnd, AEGAData.CRRegs[crHSyncEnd] and $1F);
     Print('Horizontal sync end real value: ' + ByteToDots(HSyncEnd, Dots));
     if HSyncEnd > HTotal + 1 then begin
       Print('Horizontal sync end on next line: ' + ByteToDots(HSyncEnd - (HTotal + 1), Dots));
