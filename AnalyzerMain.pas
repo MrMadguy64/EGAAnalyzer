@@ -67,7 +67,7 @@ var
   Form1: TForm1;
 
 const
-  Version = 'v0.2';
+  Version = 'v0.4';
   CpuID ={$ifdef CPUX86}'Win32'{$else}'Win64'{$endif};
   ReleaseID ={$ifdef DEBUG}'Debug'{$else}'Release'{$endif};
   TabWidth = 8;
@@ -182,6 +182,21 @@ end;
 function DWordToHex(const ADWord:Longword):String;
 begin
   Result := IntToStr(ADWord) + ' (0x' + IntToHex(ADWord, 8) + ')';
+end;
+
+function WrapClock(ATotal, AClock, ARealClock:Integer):Integer;
+begin
+  if AClock > ATotal then begin
+    if ARealClock = 0 then begin
+      Result := ATotal + 1;
+    end
+    else begin
+      Result := ATotal + 2 + ARealClock;
+    end;
+  end
+  else begin
+    Result := AClock;
+  end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -319,7 +334,7 @@ begin
   DotClock := AFreqData[Temp] shr Shift;
   Print('Estimated dot clock: ' + IntToStr(DotClock) + 'Hz');
   Print(Choose(CheckFlag(AEGAData.MOR, Bit4), 'External drivers', 'Internal drivers'));
-  Print(Choose(CheckFlag(AEGAData.MOR, Bit5), 'High Odd/Even page', 'Low Odd/Even page'));
+  Print(Choose(CheckFlag(AEGAData.MOR, Bit5), 'Low Odd/Even page', 'High Odd/Even page'));
   Print(Choose(CheckFlag(AEGAData.MOR, Bit6), 'Horizontal retrace negative', 'Horizontal retrace positive'));
   Print(Choose(CheckFlag(AEGAData.MOR, Bit7), 'Vertical retrace negative', 'Vertical retrace positive'));
   Pop;
@@ -333,8 +348,12 @@ begin
   Print('Horizontal displayed: ' + ByteToDots(HDisp, Dots));
   HBlankStart := AEGAData.CRRegs[crHBlankStart];
   Print('Horizontal blanking start: ' + ByteToDots(HBlankStart, Dots));
-  if HBlankStart > HTotal + 1 then begin
-    Print('Horizontal blanking start beyond total');
+  if HBlankStart > HTotal then begin
+    HBlankStart := WrapClock(HTotal, HBlankStart, HBlankStart);
+    Print('Horizontal blanking start real value: ' + ByteToDots(HBlankStart, Dots));
+    if HBlankStart > HTotal + 1 then begin
+      Print('Horizontal blanking start on next line: ' + ByteToDots(HBlankStart - (HTotal + 1), Dots));
+    end;
   end;
   HBlankEnd := (AEGAData.CRRegs[crHBlankStart] and $E0) or
     (AEGAData.CRRegs[crHBlankEnd] and $1F);
@@ -343,26 +362,36 @@ begin
       (AEGAData.CRRegs[crHBlankEnd] and $1F);
   end;
   Print('Horizontal blanking end: ' + ByteToDots(HBlankEnd, Dots));
-  if HBlankEnd > HTotal + 1 then begin
-    HBlankEnd := HTotal + 1;
+  if HBlankEnd > HTotal then begin
+    HBlankEnd := WrapClock(HTotal, HBlankEnd, AEGAData.CRRegs[crHBlankEnd]);
     Print('Horizontal blanking end real value: ' + ByteToDots(HBlankEnd, Dots));
+    if HBlankEnd > HTotal + 1 then begin
+      Print('Horizontal blanking end on next line: ' + ByteToDots(HBlankEnd - (HTotal + 1), Dots));
+    end;
   end;
   Print('Horizontal blanking width: ' + ByteToDots(Byte(HBlankEnd - HBlankStart), Dots));
   DESkew := (AEGAData.CRRegs[crHBlankEnd] and $60) shr 5;
   Print('Display enable skew: ' + ByteToDots(DESkew, Dots));
   HSyncStart := AEGAData.CRRegs[crHSyncStart];
   Print('Horizontal sync start: ' + ByteToDots(HSyncStart, Dots));
-  if HSyncStart > HTotal + 1 then begin
-    Print('Horizontal sync start beyond total');
+  if HSyncStart > HTotal then begin
+    HSyncStart := WrapClock(HTotal, HSyncStart, HSyncStart);
+    Print('Horizontal sync start real value: ' + ByteToDots(HSyncStart, Dots));
+    if HSyncStart > HTotal + 1 then begin
+      Print('Horizontal sync start on next line: ' + ByteToDots(HSyncStart - (HTotal + 1), Dots));
+    end;
   end;
   HSyncEnd := (HSyncStart and $E0) or (AEGAData.CRRegs[crHSyncEnd] and $1F);
   if HSyncEnd < HSyncStart then begin
     HSyncEnd := ((HSyncStart + $1F) and $E0) or (AEGAData.CRRegs[crHSyncEnd] and $1F);
   end;
   Print('Horizontal sync end: ' + ByteToDots(HSyncEnd, Dots));
-  if HSyncEnd > HTotal + 1 then begin
-    HSyncEnd := HTotal + 1;
+  if HSyncEnd > HTotal then begin
+    HSyncEnd := WrapClock(HTotal, HSyncEnd, AEGAData.CRRegs[crHSyncEnd]);
     Print('Horizontal sync end real value: ' + ByteToDots(HSyncEnd, Dots));
+    if HSyncEnd > HTotal + 1 then begin
+      Print('Horizontal sync end on next line: ' + ByteToDots(HSyncEnd - (HTotal + 1), Dots));
+    end;
   end;
   Print('Horizontal sync width: ' + ByteToDots(Byte(HSyncEnd - HSyncStart), Dots));
   HSyncSkew := (AEGAData.CRRegs[crHSyncEnd] and $60) shr 5;
@@ -385,17 +414,23 @@ begin
   Print('Horizontal display start: ' + ByteToDots(DispStart, Dots));
   Print('Horizontal display end: ' + ByteToDots(DispStart + HDisp, Dots));
   Print('Horizontal blanking start: ' + ByteToDots(HBlankStart + 1, Dots));
-  if HBlankStart > HTotal + 1 then begin
-    Print('Horizontal blanking start beyond total');
+  if HBlankStart > HTotal then begin
+    Print('Horizontal blanking start on next line: ' + ByteToDots(HBlankStart - HTotal, Dots));
   end;
   Print('Horizontal blanking end: ' + ByteToDots(HBlankEnd + 1, Dots));
+  if HBlankEnd > HTotal then begin
+    Print('Horizontal blanking end on next line: ' + ByteToDots(HBlankEnd - HTotal, Dots));
+  end;
   Print('Horizontal blanking width: ' + ByteToDots(Byte(HBlankEnd - HBlankStart), Dots));
   Print('Display enable skew: ' + ByteToDots(DESkew, Dots));
   Print('Horizontal sync start: ' + ByteToDots(HSyncStart + HSyncSkew, Dots));
-  if HSyncStart > HTotal + 1 then begin
-    Print('Horizontal sync start beyond total');
+  if HSyncStart + HSyncSkew > HTotal + 1 then begin
+    Print('Horizontal sync start on next line: ' + ByteToDots(HSyncStart + HSyncSkew - (HTotal + 2), Dots));
   end;
   Print('Horizontal sync end: ' + ByteToDots(HSyncEnd + HSyncSkew, Dots));
+  if HSyncEnd + HSyncSkew > HTotal + 1 then begin
+    Print('Horizontal sync end on next line: ' + ByteToDots(HSyncEnd + HSyncSkew - (HTotal + 2), Dots));
+  end;
   Print('Horizontal sync width: ' + ByteToDots(Byte(HSyncEnd - HSyncStart), Dots));
   Print('Horizontal sync skew: ' + ByteToDots(HSyncSkew, Dots));
   Print('Byte panning: ' + ByteToDots(BytePan, Dots));
