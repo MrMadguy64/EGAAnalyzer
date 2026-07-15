@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="40"/>
       </Unit>
       <Unit>
         <Filename Value="AnalyzerMain.pas"/>
@@ -21,9 +21,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="67"/>
-        <CursorPos X="18" Y="70"/>
-        <UsageCount Value="38"/>
+        <TopLine Value="59"/>
+        <CursorPos X="18" Y="73"/>
+        <UsageCount Value="40"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -43,90 +43,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="360" Column="72" TopLine="346"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="172" Column="5" TopLine="160"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="351" Column="44" TopLine="337"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="356" Column="76"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="364" Column="67" TopLine="347"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="280" Column="19" TopLine="266"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="320" Column="19" TopLine="296"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="370" Column="5" TopLine="355"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="383" Column="55" TopLine="361"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="391" Column="93" TopLine="368"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="384" Column="72" TopLine="370"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="17" Column="68"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="400" Column="71"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="429" Column="92" TopLine="413"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="427" Column="56" TopLine="413"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="255" Column="41" TopLine="234"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="237" Column="36" TopLine="222"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="440" Column="67" TopLine="432"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="442" Column="72" TopLine="426"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="476" Column="83" TopLine="458"/>
-      </Position>
-      <Position>
-        <Filename Value="AnalyzerMain.pas"/>
-        <Caret Line="271" Column="5" TopLine="271"/>
-      </Position>
       <Position>
         <Filename Value="AnalyzerMain.pas"/>
         <Caret Line="447" Column="18" TopLine="432"/>
@@ -162,6 +78,90 @@
       <Position>
         <Filename Value="AnalyzerMain.pas"/>
         <Caret Line="432" Column="69" TopLine="416"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="356" Column="81" TopLine="339"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="63" Column="76" TopLine="64"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="549" Column="78" TopLine="530"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="354" Column="8" TopLine="331"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="269" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="270" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="273" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="269" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="270" TopLine="263"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="356" Column="65" TopLine="342"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="441" Column="4" TopLine="431"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="179" Column="36" TopLine="165"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="282" Column="11" TopLine="258"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="334" Column="42" TopLine="321"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="335" Column="29" TopLine="321"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="409" Column="7" TopLine="391"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="446" Column="26" TopLine="436"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="452" Column="30" TopLine="436"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="453" Column="30" TopLine="437"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="452" Column="30" TopLine="436"/>
+      </Position>
+      <Position>
+        <Filename Value="AnalyzerMain.pas"/>
+        <Caret Line="638" Column="16" TopLine="615"/>
       </Position>
     </JumpHistory>
     <RunParams>

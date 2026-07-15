@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  LazUTF8;
+  ComCtrls, LazUTF8;
 
 type
   TSCReg = (scClocking, scMapMask, scCharMap, scMemMode);
@@ -47,6 +47,7 @@ type
     Memo1: TMemo;
     OpenDialog1: TOpenDialog;
     Panel1: TPanel;
+    ProgressBar1: TProgressBar;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -60,6 +61,8 @@ type
     procedure PrintError(const AMsg:String);
     procedure PrintPalette(const AEGAData:TEGAData);
     procedure PrintData(const AEGAData:TEGAData;const AFreqData:TFreqData);
+    function PrintClock(const AMsg:String;ATotal, AClock, ARealClock, ADots:Integer):Integer;
+    procedure PrintAdjusted(const AMsg:String;ATotal, AClock, ADots:Integer);
     procedure DebugPrint(ABinData:TBinData);
   end;
 
@@ -67,7 +70,7 @@ var
   Form1: TForm1;
 
 const
-  Version = 'v0.5';
+  Version = 'v0.6';
   CpuID ={$ifdef CPUX86}'Win32'{$else}'Win64'{$endif};
   ReleaseID ={$ifdef DEBUG}'Debug'{$else}'Release'{$endif};
   TabWidth = 8;
@@ -174,6 +177,12 @@ begin
     ', ' + IntToStr(AByte * ADots) + ')';
 end;
 
+function WordToDots(const AWord:Word; ADots:Integer):String;
+begin
+  Result := IntToStr(AWord) + ' (0x' + IntToHex(AWord, 4) +
+    ', ' + IntToStr(AWord * ADots) + ')';
+end;
+
 function WordToHex(const AWord:Word):String;
 begin
   Result := IntToStr(AWord) + ' (0x' + IntToHex(AWord, 4) + ')';
@@ -182,21 +191,6 @@ end;
 function DWordToHex(const ADWord:Longword):String;
 begin
   Result := IntToStr(ADWord) + ' (0x' + IntToHex(ADWord, 8) + ')';
-end;
-
-function WrapClock(ATotal, AClock, ARealClock:Integer):Integer;
-begin
-  if AClock > ATotal then begin
-    if ARealClock = 0 then begin
-      Result := ATotal + 1;
-    end
-    else begin
-      Result := ATotal + 2 + ARealClock;
-    end;
-  end
-  else begin
-    Result := AClock;
-  end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -278,10 +272,19 @@ begin
   Print(PalToStr(AEGAData.ACRegs[acPal12], 4));
 end;
 
+function MaskClock(AClockStart, AClockEnd, AMask:Integer):Integer;
+begin
+  Result := (AClockStart and (not AMask)) or (AClockEnd and AMask);
+  if Result < AClockStart then begin
+    Result := ((AClockStart + AMask) and (not AMask)) or (AClockEnd and AMask);
+  end;
+end;
+
 procedure TForm1.PrintData(const AEGAData:TEGAData;const AFreqData:TFreqData);
   var Temp, Dots, Shift, DotClock, HTotal, HFreq, HDisp, HBlankStart:Integer;
-    HBlankEnd, DispStart, DESkew, HSyncStart, HSyncEnd, HSyncSkew:Integer;
-    BytePan, VTotal, VSyncStart, VSyncEnd, VBlankStart, VBlankEnd:Integer;
+    HBlankEnd, HBlankRealEnd, DispStart, DESkew, HSyncStart, HSyncEnd:Integer;
+    HSyncRealEnd, HSyncSkew, BytePan, VTotal, VSyncStart, VSyncEnd:Integer;
+    VBlankStart, VBlankEnd:Integer;
     TextMode1, TextMode2, TextMode3, Agree1, Agree2, WordMode:Boolean;
     OddEven1, OddEven2:Boolean;
 begin
@@ -347,52 +350,18 @@ begin
   HDisp := AEGAData.CRRegs[crHDispEnd];
   Print('Horizontal displayed: ' + ByteToDots(HDisp, Dots));
   HBlankStart := AEGAData.CRRegs[crHBlankStart];
-  Print('Horizontal blanking start: ' + ByteToDots(HBlankStart, Dots));
-  if HBlankStart > HTotal then begin
-    HBlankStart := WrapClock(HTotal, HBlankStart, HBlankStart);
-    Print('Horizontal blanking start real value: ' + ByteToDots(HBlankStart, Dots));
-    if HBlankStart > HTotal + 1 then begin
-      Print('Horizontal blanking start on next line: ' + ByteToDots(HBlankStart - (HTotal + 1), Dots));
-    end;
-  end;
-  HBlankEnd := (AEGAData.CRRegs[crHBlankStart] and $E0) or
-    (AEGAData.CRRegs[crHBlankEnd] and $1F);
-  if HBlankEnd < HBlankStart then begin
-    HBlankEnd := ((AEGAData.CRRegs[crHBlankStart] + $1F) and $E0) or
-      (AEGAData.CRRegs[crHBlankEnd] and $1F);
-  end;
-  Print('Horizontal blanking end: ' + ByteToDots(HBlankEnd, Dots));
-  if HBlankEnd > HTotal then begin
-    HBlankEnd := WrapClock(HTotal, HBlankEnd, AEGAData.CRRegs[crHBlankEnd] and $1F);
-    Print('Horizontal blanking end real value: ' + ByteToDots(HBlankEnd, Dots));
-    if HBlankEnd > HTotal + 1 then begin
-      Print('Horizontal blanking end on next line: ' + ByteToDots(HBlankEnd - (HTotal + 1), Dots));
-    end;
-  end;
+  HBlankStart := PrintClock('Horizontal blanking start', HTotal, HBlankStart, HBlankStart, Dots);
+  HBlankRealEnd := AEGAData.CRRegs[crHBlankEnd];
+  HBlankEnd := MaskClock(HBlankStart, HBlankRealEnd, $1F);
+  HBlankEnd := PrintClock('Horizontal blanking end', HTotal, HBlankEnd, HBlankRealEnd, Dots);
   Print('Horizontal blanking width: ' + ByteToDots(Byte(HBlankEnd - HBlankStart), Dots));
   DESkew := (AEGAData.CRRegs[crHBlankEnd] and $60) shr 5;
   Print('Display enable skew: ' + ByteToDots(DESkew, Dots));
   HSyncStart := AEGAData.CRRegs[crHSyncStart];
-  Print('Horizontal sync start: ' + ByteToDots(HSyncStart, Dots));
-  if HSyncStart > HTotal then begin
-    HSyncStart := WrapClock(HTotal, HSyncStart, HSyncStart);
-    Print('Horizontal sync start real value: ' + ByteToDots(HSyncStart, Dots));
-    if HSyncStart > HTotal + 1 then begin
-      Print('Horizontal sync start on next line: ' + ByteToDots(HSyncStart - (HTotal + 1), Dots));
-    end;
-  end;
-  HSyncEnd := (HSyncStart and $E0) or (AEGAData.CRRegs[crHSyncEnd] and $1F);
-  if HSyncEnd < HSyncStart then begin
-    HSyncEnd := ((HSyncStart + $1F) and $E0) or (AEGAData.CRRegs[crHSyncEnd] and $1F);
-  end;
-  Print('Horizontal sync end: ' + ByteToDots(HSyncEnd, Dots));
-  if HSyncEnd > HTotal then begin
-    HSyncEnd := WrapClock(HTotal, HSyncEnd, AEGAData.CRRegs[crHSyncEnd] and $1F);
-    Print('Horizontal sync end real value: ' + ByteToDots(HSyncEnd, Dots));
-    if HSyncEnd > HTotal + 1 then begin
-      Print('Horizontal sync end on next line: ' + ByteToDots(HSyncEnd - (HTotal + 1), Dots));
-    end;
-  end;
+  HSyncStart := PrintClock('Horizontal sync start', HTotal, HSyncStart, HSyncStart, Dots);
+  HSyncRealEnd := AEGAData.CRRegs[crHSyncEnd];
+  HSyncEnd := MaskClock(HSyncStart, HSyncRealEnd, $1F);
+  HSyncEnd := PrintClock('Horizontal sync end', HTotal, HSyncEnd, HSyncRealEnd, Dots);
   Print('Horizontal sync width: ' + ByteToDots(Byte(HSyncEnd - HSyncStart), Dots));
   HSyncSkew := (AEGAData.CRRegs[crHSyncEnd] and $60) shr 5;
   Print('Horizontal sync skew: ' + ByteToDots(HSyncSkew, Dots));
@@ -413,24 +382,12 @@ begin
   end;
   Print('Horizontal display start: ' + ByteToDots(DispStart, Dots));
   Print('Horizontal display end: ' + ByteToDots(DispStart + HDisp, Dots));
-  Print('Horizontal blanking start: ' + ByteToDots(HBlankStart + 1, Dots));
-  if HBlankStart > HTotal then begin
-    Print('Horizontal blanking start on next line: ' + ByteToDots(HBlankStart - HTotal, Dots));
-  end;
-  Print('Horizontal blanking end: ' + ByteToDots(HBlankEnd + 1, Dots));
-  if HBlankEnd > HTotal then begin
-    Print('Horizontal blanking end on next line: ' + ByteToDots(HBlankEnd - HTotal, Dots));
-  end;
+  PrintAdjusted('Horizontal blanking start', HTotal, HBlankStart, Dots);
+  PrintAdjusted('Horizontal blanking end', HTotal, HBlankEnd, Dots);
   Print('Horizontal blanking width: ' + ByteToDots(Byte(HBlankEnd - HBlankStart), Dots));
   Print('Display enable skew: ' + ByteToDots(DESkew, Dots));
-  Print('Horizontal sync start: ' + ByteToDots(HSyncStart + HSyncSkew, Dots));
-  if HSyncStart + HSyncSkew > HTotal + 1 then begin
-    Print('Horizontal sync start on next line: ' + ByteToDots(HSyncStart + HSyncSkew - (HTotal + 2), Dots));
-  end;
-  Print('Horizontal sync end: ' + ByteToDots(HSyncEnd + HSyncSkew, Dots));
-  if HSyncEnd + HSyncSkew > HTotal + 1 then begin
-    Print('Horizontal sync end on next line: ' + ByteToDots(HSyncEnd + HSyncSkew - (HTotal + 2), Dots));
-  end;
+  PrintAdjusted('Horizontal sync start', HTotal, HSyncStart + HSyncSkew, Dots);
+  PrintAdjusted('Horizontal sync end', HTotal, HSyncEnd + HSyncSkew, Dots);
   Print('Horizontal sync width: ' + ByteToDots(Byte(HSyncEnd - HSyncStart), Dots));
   Print('Horizontal sync skew: ' + ByteToDots(HSyncSkew, Dots));
   Print('Byte panning: ' + ByteToDots(BytePan, Dots));
@@ -481,7 +438,7 @@ begin
   if WordMode then begin
     Temp := Temp shl 1;
   end;
-  Print('Adjusted offset: ' + ByteToDots(Temp, Dots));
+  Print('Adjusted offset: ' + WordToDots(Temp, Dots));
   Print('Underline location: ' + ByteToHex(AEGAData.CRRegs[crUnderline] and $1F));
   VBlankStart := AEGAData.CRRegs[crVBlankStart] or ((AEGAData.CRRegs[crOverflow] and Bit3) shl 4);
   Print('Vertical blanking start: ' + WordToHex(VBlankStart));
@@ -563,6 +520,45 @@ begin
   Pop;
 end;
 
+function WrapClock(ATotal, AClock, ARealClock:Integer):Integer;
+begin
+  if AClock > ATotal then begin
+    if ARealClock = 0 then begin
+      Result := ATotal + 1;
+    end
+    else begin
+      Result := ATotal + 2 + ARealClock;
+    end;
+  end
+  else begin
+    Result := AClock;
+  end;
+end;
+
+function TForm1.PrintClock(const AMsg:String;ATotal, AClock, ARealClock, ADots:Integer):Integer;
+begin
+  Print(AMsg+ ': ' + ByteToDots(AClock, ADots));
+  if AClock > ATotal then begin
+    Result := WrapClock(ATotal, AClock, ARealClock);
+    Print(AMsg+ ' real value: ' + ByteToDots(Result, ADots));
+    if Result > ATotal + 1 then begin
+      Print(AMsg+ ' on next line: ' + ByteToDots(Result - (ATotal + 2), ADots));
+    end;
+  end
+  else begin
+   Result := AClock;
+  end;
+end;
+
+procedure TForm1.PrintAdjusted(const AMsg:String;ATotal, AClock, ADots:Integer);
+begin
+  Inc(AClock);
+  Print(AMsg+ ': ' + ByteToDots(AClock, ADots));
+  if AClock > ATotal + 1 then begin
+    Print(AMsg+ ' on next line: ' + ByteToDots(AClock - (ATotal + 2), ADots));
+  end;
+end;
+
 procedure TForm1.DebugPrint(ABinData:TBinData);
   var Temp:String;I:Integer;
 begin
@@ -628,12 +624,17 @@ begin
         end;
         Count := Length(BinData) div SizeOf(TEGAData);
         EGAData := @BinData[0];
+        ProgressBar1.Max := Count;
+        ProgressBar1.Position := 0;
+        Application.ProcessMessages;
         for I := 0 to Count - 1 do begin
           Print(UTF8StringOfChar('-', 80));
           Print('Mode ' + DWordToHex(I));
           Push;
           PrintData(EGAData^, FreqData);
           ResetTabs;
+          ProgressBar1.Position := I + 1;
+          Application.ProcessMessages;
           Inc(EGAData);
         end;
       except

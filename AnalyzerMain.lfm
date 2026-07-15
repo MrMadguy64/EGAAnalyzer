@@ -11,7 +11,7 @@ object Form1: TForm1
   OnCreate = FormCreate
   object Memo1: TMemo
     Left = 0
-    Height = 414
+    Height = 394
     Top = 34
     Width = 640
     Align = alClient
@@ -22,7 +22,7 @@ object Form1: TForm1
   object Button1: TButton
     Left = 0
     Height = 32
-    Top = 448
+    Top = 428
     Width = 640
     Align = alBottom
     Caption = 'Analyze'
@@ -57,6 +57,14 @@ object Form1: TForm1
       TabOrder = 1
       OnClick = Button2Click
     end
+  end
+  object ProgressBar1: TProgressBar
+    Left = 0
+    Height = 20
+    Top = 460
+    Width = 640
+    Align = alBottom
+    TabOrder = 3
   end
   object OpenDialog1: TOpenDialog
     Filter = 'EGA Analyzer config|*.cfg|All files|*.*'
